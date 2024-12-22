@@ -15,6 +15,7 @@ import Authprovider from './components/AuthProvider.jsx';
 import RoomsPage from './components/RoomsPage.jsx';
 import RoomDetailsPage from './components/RoomDetailsPage.jsx';
 import PrivateRoutes from './components/PrivateRoutes.jsx';
+import MyBookingsPage from './components/MyBookingsPage.jsx';
 
 
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
          path: '/rooms/:roomId',
        element:<PrivateRoutes><RoomDetailsPage></RoomDetailsPage></PrivateRoutes>
       },
+      {
+        path: '/my-booking',
+      element:<PrivateRoutes><MyBookingsPage></MyBookingsPage></PrivateRoutes>
+     },
 
       
       {

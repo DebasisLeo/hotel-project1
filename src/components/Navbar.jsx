@@ -39,20 +39,8 @@ const Navbar = () => {
           My Bookiings
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/about" className="hover:text-primary flex items-center gap-2">
-          <FaInfoCircle />
-          About Us
-        </NavLink>
-      </li>
-      {user && (
-        <li>
-          <NavLink to="/my-profile" className="hover:text-primary flex items-center gap-2">
-            <FaUser />
-            My Profile
-          </NavLink>
-        </li>
-      )}
+     
+    
     </>
   );
 
