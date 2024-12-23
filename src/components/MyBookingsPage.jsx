@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import {Link} from 'react-router-dom'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from './AuthProvider';
@@ -286,6 +287,16 @@ const MyBookingsPage = () => {
           </div>
         </div>
       )}
+      <div className="flex justify-center mt-6">
+  <Link to="/rooms">
+    <button
+      className="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-purple-300"
+    >
+      Back To Rooms
+    </button>
+  </Link>
+</div>
+
     </div>
   );
 };

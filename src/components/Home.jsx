@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Typewriter } from 'react-simple-typewriter';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FaStar } from 'react-icons/fa';
@@ -84,6 +85,29 @@ const Home = () => {
 
   return (
     <div className="font-sans">
+     
+     {/* Typewriter Text */}
+<div 
+  className="mb-8 text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 text-center" 
+  data-aos="fade-up"
+>
+  <Typewriter
+    words={[
+      'Hey,Welcome to LuxStay Hotels',
+      'Book Your Dream Room Today',
+      'Luxury. Comfort. Convenience.'
+    ]}
+    loop={true}
+    cursor
+    cursorStyle="|"
+    typeSpeed={80}
+    deleteSpeed={50}
+    delaySpeed={1500}
+  />
+</div>
+
+
+
       {/* Modal */}
       {isModalOpen && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
