@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
          path: '/rooms/:roomId',
-       element:<PrivateRoutes><RoomDetailsPage></RoomDetailsPage></PrivateRoutes>
+       element:<RoomDetailsPage></RoomDetailsPage>
       },
       {
         path: '/my-booking',
