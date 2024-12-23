@@ -18,6 +18,8 @@ const RoomDetailsPage = () => {
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(0);
   const [errorFetchingReviews, setErrorFetchingReviews] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [roomBookingDetails, setRoomBookingDetails] = useState(null);
 
   useEffect(() => {
     if (roomId) {
@@ -57,6 +59,20 @@ const RoomDetailsPage = () => {
       return;
     }
 
+    // Set room booking details for the modal
+    setRoomBookingDetails({
+      roomName: room.name,
+      roomPrice: room.price,
+      bookingDate,
+      checkOutDate,
+      description: room.description,
+    });
+
+    // Show the modal
+    setShowModal(true);
+  };
+
+  const handleConfirmBooking = () => {
     fetch(`http://localhost:3000/rooms/${roomId}/book`, {
       method: 'POST',
       headers: {
@@ -78,6 +94,9 @@ const RoomDetailsPage = () => {
         }
       })
       .catch((err) => console.error(err));
+
+    // Close the modal after booking
+    setShowModal(false);
   };
 
   const handlePostReview = () => {
@@ -166,6 +185,46 @@ const RoomDetailsPage = () => {
           </button>
         </div>
       </motion.div>
+
+      {/* Modal for booking confirmation */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-2xl font-semibold mb-4">Confirm Your Booking</h2>
+            <p><strong>Room:</strong> {roomBookingDetails.roomName}</p>
+            <p><strong>Price:</strong> {roomBookingDetails.roomPrice} USD/night</p>
+            <p><strong>Description:</strong> {roomBookingDetails.description}</p>
+            <p><strong>Booking Date:</strong> {bookingDate ? bookingDate.toLocaleDateString() : ''}</p>
+            <p><strong>Check-out Date:</strong> {checkOutDate ? checkOutDate.toLocaleDateString() : ''}</p>
+
+            <h3 className="text-xl font-semibold mt-4">Select Booking Date</h3>
+            <DatePicker
+              selected={bookingDate}
+              onChange={setBookingDate}
+              className="input w-full border rounded-md p-2"
+              placeholderText="Booking Date"
+              dateFormat="MMMM d, yyyy"
+              isClearable
+              inline
+            />
+
+            <div className="mt-4 flex justify-between">
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmBooking}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+              >
+                Confirm Booking
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <motion.div
         className="reviews-section mt-8"

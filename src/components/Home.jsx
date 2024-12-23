@@ -6,6 +6,9 @@ import banner1 from '../assets/banner1.png';
 import banner2 from '../assets/banner2.png';
 import banner3 from '../assets/banner3.png';
 import banner4 from '../assets/banner4.png';
+import offers from '../assets/offers.jpg';
+import g from '../assets/g.png';
+import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Slider from 'react-slick';
@@ -79,27 +82,116 @@ const Home = () => {
     <div className="font-sans">
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-lg text-center relative">
-            <h2 className="text-2xl font-bold mb-4 text-red-500">Special Offers & Promotions</h2>
-            <p className="text-gray-700 mb-6">
-              Enjoy up to <span className="font-bold">50% off</span> on selected rooms! Book your stay now and experience luxury at an unbeatable price.
-            </p>
-            <button
-              onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl font-bold"
-            >
-              &times;
-            </button>
-            <button
-              onClick={closeModal}
-              className="px-6 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-            >
-              Explore Offers
-            </button>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <motion.div
+      className="bg-white rounded-lg shadow-lg p-8 w-11/12 max-w-lg text-center relative transform transition-all duration-300 ease-in-out hover:scale-105"
+      style={{
+        backgroundImage: `url(${g})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '12px',
+      }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.5 }}
+    >
+      <button
+        onClick={closeModal}
+        className="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-3xl font-bold"
+      >
+        &times;
+      </button>
+      <div className="text-center p-4">
+        {/* Header with highlight animation */}
+        <motion.h2
+          className="text-3xl font-bold mb-4 text-white shadow-md p-2 inline-block bg-opacity-60 bg-black rounded-md"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          Special Offers & Promotions
+        </motion.h2>
+        
+        {/* Description Text with Highlighted "50% off" */}
+        <motion.p
+          className="text-lg text-white shadow-md mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          Enjoy up to{' '}
+          <motion.span
+            className="font-bold text-yellow-400"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            50% off
+          </motion.span>{' '}
+          on selected rooms! Book your stay now and experience luxury at an unbeatable price.
+        </motion.p>
+
+        {/* Button with Hover Animation */}
+        <motion.button
+          onClick={closeModal}
+          className="px-6 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out transform hover:scale-110"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Explore Offers
+        </motion.button>
+      </div>
+    </motion.div>
+  </div>
+)}
+
+
+{/* Special Offers Section */}
+<section
+  className="relative bg-cover bg-center h-[500px] mb-7"
+  style={{ backgroundImage: `url(${offers})` }}
+>
+  <motion.div
+    className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+  >
+    <div className="text-white px-8 md:px-16">
+      {/* Animated Heading */}
+      <motion.h2
+        className="text-4xl font-bold mb-4"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        Exclusive Offers Just for You!
+      </motion.h2>
+
+      {/* Animated Paragraph */}
+      <motion.p
+        className="text-lg mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        Save up to 50% on your next stay. Don't miss out on this limited-time offer!
+      </motion.p>
+
+      {/* Animated Button */}
+      <motion.a
+        href="#offers"
+        className="px-8 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+      >
+        Book Now
+      </motion.a>
+    </div>
+  </motion.div>
+</section>
 
       {/* Banner Section with Slider */}
       <div className="carousel w-full relative">
