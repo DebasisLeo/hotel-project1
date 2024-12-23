@@ -1,18 +1,17 @@
 import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-
-import { FaUser, FaSignOutAlt, FaHome, FaBookOpen, FaInfoCircle, FaRocket } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaHome, FaBookOpen, FaRocket } from 'react-icons/fa';
 import logo from '../assets/logo.png';
 import { AuthContext } from './AuthProvider';
+import { Helmet } from 'react-helmet';  // Import Helmet
 
 const Navbar = () => {
   const { user, signOutUser } = useContext(AuthContext);
 
- 
   const handleSignOut = () => {
     signOutUser()
       .then(() => {
-       
+        // Handle post sign-out actions if needed
       })
       .catch((error) => {
         console.error('Sign out failed:', error.message);
@@ -36,17 +35,21 @@ const Navbar = () => {
       <li>
         <NavLink to="/my-booking" className="hover:text-primary flex items-center gap-2">
           <FaBookOpen />
-          My Bookiings
+          My Bookings
         </NavLink>
       </li>
-     
-    
     </>
   );
 
   return (
     <div className="bg-gradient-to-r from-blue-500 via-purple-600 to-indigo-700 shadow-md">
       
+      {/* Helmet for dynamic title and meta data */}
+      <Helmet>
+        <title>{user ? `${user.displayName}'s Dashboard` : 'My LuxStay Hotel'}</title>
+        <meta name="description" content={user ? `${user.displayName}'s personal dashboard` : 'Book the best rooms at My LuxStay Hotel.'} />
+      </Helmet>
+
       {user && (
         <div className="flex justify-center items-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-4 animate__animated animate__fadeIn">
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold animate__bounce text-center">

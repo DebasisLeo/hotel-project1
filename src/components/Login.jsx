@@ -43,7 +43,7 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then(() => {
-        navigate('/');
+        navigate(location?.state ? location.state : "/");
         toast.success('Logged in with Google!');
       })
       .catch((error) => {
