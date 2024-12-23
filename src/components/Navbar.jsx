@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FaUser, FaSignOutAlt, FaHome, FaBookOpen, FaRocket } from 'react-icons/fa';
 import logo from '../assets/logo.png';
+import l1 from '../assets/l1.png'
+
 import { AuthContext } from './AuthProvider';
 import { Helmet } from 'react-helmet';  // Import Helmet
 
@@ -85,7 +87,7 @@ const Navbar = () => {
             </ul>
           </div>
           <Link to="/" className="flex items-center">
-            <img className="w-12 h-auto" src={logo} alt="Logo" />
+            <img className="w-16 h-16 rounded-full " src={l1} alt="Logo" />
             <span className="text-xl font-semibold ml-2 text-white">Brand</span>
           </Link>
         </div>
