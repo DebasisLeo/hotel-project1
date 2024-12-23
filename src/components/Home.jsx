@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaWifi, FaSwimmingPool, FaSpa, FaBed } from 'react-icons/fa'; // React Icons
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import banner1 from '../assets/banner1.png'; // Add multiple banners for slider
+import banner1 from '../assets/banner1.png';
 import banner2 from '../assets/banner2.png';
 import banner3 from '../assets/banner3.png';
 import banner4 from '../assets/banner4.png';
-import 'leaflet/dist/leaflet.css';
-import AOS from 'aos'; // Importing AOS for animations
-import 'aos/dist/aos.css'; // Importing AOS styles
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import Slider from 'react-slick';
+import { FaWifi, FaSwimmingPool, FaSpa, FaBed } from 'react-icons/fa';
 
 const Home = () => {
   const [featuredRooms, setFeaturedRooms] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(true); // State for modal visibility
+  const [reviews, setReviews] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
-  // Fetch data from the backend
+  // Fetch room data and reviews from the backend
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -27,9 +28,19 @@ const Home = () => {
       }
     };
 
-    fetchRooms();
+    const fetchAllReviews = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/reviews');
+        const data = await response.json();
+        setReviews(data);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
 
-    // Initialize AOS
+    fetchRooms();
+    fetchAllReviews(); 
+
     AOS.init({ duration: 1000 });
   }, []);
 
@@ -37,9 +48,36 @@ const Home = () => {
     setIsModalOpen(false);
   };
 
+  // Convert UTC date to Bangladesh time (BST)
+  const convertToBDTime = (utcDate) => {
+    const date = new Date(utcDate);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Dhaka',
+    };
+    return date.toLocaleString('en-GB', options);
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    arrows: false,
+  };
+
   return (
     <div className="font-sans">
-      {/* Popup Modal for Special Offers */}
+      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-lg text-center relative">
@@ -64,29 +102,82 @@ const Home = () => {
       )}
 
       {/* Banner Section with Slider */}
-      <div className="carousel w-full">
-        {/* Slides */}
-        {/* Slide1 */}
-        <div id="slide1" className="carousel-item relative w-full">
-          <img src={banner1} className="w-full" />
-          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between text-white">
-            <div className="text-center">
-              <h2 className="text-4xl font-bold mb-4">Welcome to Our Hotel</h2>
-              <p className="mb-6 text-lg">Experience luxury and comfort like never before. Explore our rooms and book your stay today.</p>
-              <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-                Explore Rooms
-              </a>
-            </div>
-            <div>
-              <a href="#slide4" className="btn btn-circle">❮</a>
-              <a href="#slide2" className="btn btn-circle">❯</a>
-            </div>
-          </div>
-        </div>
-        {/* Additional slides here */}
+      <div className="carousel w-full relative">
+  {/* Slide 1 */}
+  <div id="slide1" className="carousel-item relative w-full">
+    <img src={banner1} className="w-full" alt="Banner 1" />
+    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold mb-4">Welcome to Our Hotel</h2>
+        <p className="mb-6 text-lg">Experience luxury and comfort like never before. Explore our rooms and book your stay today.</p>
+        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          Explore Rooms
+        </a>
       </div>
+      <div>
+        <a href="#slide4" className="btn btn-circle text-white">❮</a>
+        <a href="#slide2" className="btn btn-circle text-white">❯</a>
+      </div>
+    </div>
+  </div>
 
-      {/* Map Section with iframe */}
+  {/* Slide 2 */}
+  <div id="slide2" className="carousel-item relative w-full">
+    <img src={banner2} className="w-full" alt="Banner 2" />
+    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold mb-4">Discover Your Perfect Stay</h2>
+        <p className="mb-6 text-lg">Relax and unwind in our elegant rooms, designed with your comfort in mind.</p>
+        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          Book Now
+        </a>
+      </div>
+      <div>
+        <a href="#slide1" className="btn btn-circle text-white">❮</a>
+        <a href="#slide3" className="btn btn-circle text-white">❯</a>
+      </div>
+    </div>
+  </div>
+
+  {/* Slide 3 */}
+  <div id="slide3" className="carousel-item relative w-full">
+    <img src={banner3} className="w-full" alt="Banner 3" />
+    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold mb-4">Luxury Awaits You</h2>
+        <p className="mb-6 text-lg">Indulge in the finest amenities and service during your stay at our hotel.</p>
+        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          View Rooms
+        </a>
+      </div>
+      <div>
+        <a href="#slide2" className="btn btn-circle text-white">❮</a>
+        <a href="#slide4" className="btn btn-circle text-white">❯</a>
+      </div>
+    </div>
+  </div>
+
+  {/* Slide 4 */}
+  <div id="slide4" className="carousel-item relative w-full">
+    <img src={banner4} className="w-full" alt="Banner 4" />
+    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold mb-4">Unforgettable Experiences</h2>
+        <p className="mb-6 text-lg">Let us take care of every detail of your stay. You deserve the best.</p>
+        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          Explore More
+        </a>
+      </div>
+      <div>
+        <a href="#slide3" className="btn btn-circle text-white">❮</a>
+        <a href="#slide1" className="btn btn-circle text-white">❯</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      {/* Map Section */}
       <section className="py-10 px-4">
         <h2 className="text-2xl font-bold text-center mb-6">Find Us Here</h2>
         <div className="w-full h-[400px]">
@@ -113,7 +204,7 @@ const Home = () => {
                 <h3 className="text-xl font-bold mb-2">{room.name}</h3>
                 <p className="text-gray-700 mb-4">{room.description}</p>
                 <p className="text-green-600 font-bold mb-4">{room.price}</p>
-                <Link to={`/rooms/${room.id}`} className="block text-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                <Link to={`/rooms/${room._id}`} key={room.id} className="block text-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
                   Book Now
                 </Link>
               </div>
@@ -122,7 +213,73 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Other sections like Amenities and Testimonials */}
+      {/* Testimonial Carousel */}
+      <section className="py-10 px-4 bg-gray-50">
+        <h2 className="text-2xl font-bold text-center mb-6">Guest Reviews</h2>
+        <div className="max-w-4xl mx-auto">
+          <Slider {...sliderSettings}>
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <div key={review._id} className="px-4 py-6 bg-white rounded-lg shadow-md">
+                  <p className="text-gray-700 text-lg mb-4">"{review?.comment}"</p>
+                  <p className="text-gray-700 text-lg mb-4">{convertToBDTime(review?.createdAt)}</p>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold">{review.user}</span>
+                    <span className="text-sm text-yellow-500">
+                      {'⭐'.repeat(review.rating)} 
+                    </span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No reviews yet.</p>
+            )}
+          </Slider>
+        </div>
+      </section>
+
+      {/* Luxury Amenities Section */}
+      <section className="py-10 bg-blue-500 text-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Experience Luxury Amenities</h2>
+          <p className="mb-6 text-lg">Indulge in our premium facilities that elevate your stay. Whether it's a relaxing spa day, an invigorating swim, or uninterrupted Wi-Fi access, we have everything for your comfort.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            <div className="flex flex-col items-center">
+              <FaWifi className="text-4xl mb-2" />
+              <p>Free Wi-Fi</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <FaSwimmingPool className="text-4xl mb-2" />
+              <p>Swimming Pool</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <FaSpa className="text-4xl mb-2" />
+              <p>Spa Services</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <FaBed className="text-4xl mb-2" />
+              <p>Comfortable Rooms</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Customer Satisfaction Section */}
+      <section className="py-10 bg-gray-100">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Our Customer Satisfaction</h2>
+          <p className="mb-6 text-lg">With over 500+ happy guests, we strive to provide the best experiences possible. Our staff is dedicated to making your stay unforgettable.</p>
+          <div className="flex justify-center">
+            <div className="flex items-center space-x-4">
+              <p className="text-4xl font-bold text-blue-500">4.8</p>
+              <div className="flex items-center text-yellow-500">
+                {'⭐'.repeat(5)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
