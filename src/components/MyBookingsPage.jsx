@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from './AuthProvider';
+import { FaRegEdit, FaTrashAlt, FaStar } from 'react-icons/fa'; // Importing React icons
+import { motion } from 'framer-motion';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const MyBookingsPage = () => {
   const { user } = useContext(AuthContext); 
@@ -9,10 +12,10 @@ const MyBookingsPage = () => {
   const [rooms, setRooms] = useState([]); 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showUpdateDateModal, setShowUpdateDateModal] = useState(false);
-  const [showReviewModal, setShowReviewModal] = useState(false); // Show review modal
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [newBookingDate, setNewBookingDate] = useState(null);
-  const [reviewData, setReviewData] = useState({ rating: 1, comment: '' }); // New review state
+  const [reviewData, setReviewData] = useState({ rating: 1, comment: '' });
 
   useEffect(() => {
     if (user) {
@@ -20,8 +23,6 @@ const MyBookingsPage = () => {
         .then((response) => response.json())
         .then((data) => {
           setBookings(data);
-
-          // Fetch room data for each booking
           data.forEach((booking) => {
             fetch(`http://localhost:3000/rooms/${booking.roomId}`)
               .then((response) => response.json())
@@ -48,7 +49,7 @@ const MyBookingsPage = () => {
     })
       .then((response) => response.json())
       .then(() => {
-        alert('Booking canceled successfully');
+        Swal.fire('Success', 'Booking canceled successfully', 'success'); // SweetAlert success
         setBookings(bookings.filter((booking) => booking._id !== selectedBooking));
         setShowCancelModal(false);
       });
@@ -61,11 +62,11 @@ const MyBookingsPage = () => {
 
   const confirmUpdateDate = () => {
     if (!newBookingDate) {
-      alert('Please select a new date.');
+      Swal.fire('Error', 'Please select a new date.', 'error'); // SweetAlert error
       return;
     }
     if (newBookingDate < new Date()) {
-      alert('The selected date cannot be in the past.');
+      Swal.fire('Error', 'The selected date cannot be in the past.', 'error'); // SweetAlert error
       return;
     }
 
@@ -75,7 +76,7 @@ const MyBookingsPage = () => {
       body: JSON.stringify({ bookingDate: newBookingDate }),
     })
       .then(() => {
-        alert('Booking date updated successfully');
+        Swal.fire('Success', 'Booking date updated successfully', 'success'); // SweetAlert success
         setBookings(bookings.map((booking) =>
           booking._id === selectedBooking ? { ...booking, bookingDate: newBookingDate } : booking
         ));
@@ -86,10 +87,9 @@ const MyBookingsPage = () => {
   const handleReviewModal = (bookingId) => {
     const booking = bookings.find((booking) => booking._id === bookingId);
     setSelectedBooking(bookingId);
-    setReviewData({ rating: 1, comment: '' }); // Reset review data
+    setReviewData({ rating: 1, comment: '' });
     setShowReviewModal(true);
   };
-  
 
   const handleReviewChange = (e) => {
     const { name, value } = e.target;
@@ -103,20 +103,18 @@ const MyBookingsPage = () => {
     const { rating, comment } = reviewData;
     
     if (!rating || !comment) {
-      alert('Please fill out all fields');
+      Swal.fire('Error', 'Please fill out all fields', 'error'); // SweetAlert error
       return;
     }
     
-    // Get the roomId from the selected booking
     const selectedRoom = bookings.find((booking) => booking._id === selectedBooking);
     if (!selectedRoom) {
-      alert('Booking not found');
+      Swal.fire('Error', 'Booking not found', 'error'); // SweetAlert error
       return;
     }
     
-    const roomId = selectedRoom.roomId;  // Get roomId from the selected booking
+    const roomId = selectedRoom.roomId;  
     
-    // Send the review to the backend for the specified room
     fetch(`http://localhost:3000/rooms/${roomId}/reviews`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -129,30 +127,34 @@ const MyBookingsPage = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === 'Review added successfully') {
-          alert('Review submitted successfully');
+          Swal.fire('Success', 'Review submitted successfully', 'success'); // SweetAlert success
           setShowReviewModal(false);
-          // Optionally, reload bookings or reviews data here.
         } else {
-          alert(data.message); // Handle any errors
+          Swal.fire('Error', data.message, 'error'); // SweetAlert error
         }
       })
       .catch((error) => {
         console.error('Error submitting review:', error);
-        alert('Error submitting review. Please try again.');
+        Swal.fire('Error', 'Error submitting review. Please try again.', 'error'); // SweetAlert error
       });
   };
-  
-  
 
   if (!user) return <div>Please log in to view your bookings.</div>;
 
   return (
     <div className="container mx-auto px-6 py-8">
-      <h1 className="text-3xl font-bold mb-4">My Bookings</h1>
+      <motion.h1 
+        className="text-3xl font-bold mb-4 text-center text-indigo-600"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        My Bookings
+      </motion.h1>
 
       {bookings.length === 0 ? <p>You have no bookings.</p> : (
         <table className="table-auto w-full border-collapse">
-          <thead>
+          <thead className="bg-gray-100">
             <tr>
               <th className="border-b px-4 py-2">Room</th>
               <th className="border-b px-4 py-2">Booking Date</th>
@@ -166,34 +168,42 @@ const MyBookingsPage = () => {
               const room = rooms.find((room) => room.roomId === booking.roomId);
 
               return (
-                <tr key={booking._id}>
+                <motion.tr 
+                  key={booking._id} 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  transition={{ duration: 0.5 }}
+                >
                   <td className="border-b px-4 py-2">
                     {room ? (
                       <>
                         <img
                           src={room.images}
                           alt={room.name}
-                          className="w-16 h-16 object-cover"
+                          className="w-16 h-16 object-cover rounded-full"
                         />
-                        <span>{room.name}</span>
+                        <span className="ml-2  font-bold">{room.name}</span>
                       </>
                     ) : <p>Loading...</p>}
                   </td>
-                  <td className="border-b px-4 py-2">{new Date(booking.bookingDate).toLocaleDateString()}</td>
-                  <td className="border-b px-4 py-2">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
-                  <td className="border-b px-4 py-2">${room ? room.price : 'Loading...'}</td>
-                  <td className="border-b px-4 py-2">
-                    <button onClick={() => handleCancelBooking(booking._id)} className="bg-red-500 text-white py-2 px-4 rounded">
-                      Cancel Booking
+                  <td className="border-b px-4 py-2 font-bold">{new Date(booking.bookingDate).toLocaleDateString()}</td>
+                  <td className="border-b px-4 py-2 font-bold">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+                  <td className="border-b px-4 py-2 font-bold">${room ? room.price : 'Loading...'}</td>
+                  <td className="border-b px-4 py-2 flex space-x-3">
+                    <button onClick={() => handleCancelBooking(booking._id)} className="bg-red-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
+                      <FaTrashAlt />
+                      <span>Cancel</span>
                     </button>
-                    <button onClick={() => handleUpdateDate(booking._id)} className="bg-yellow-500 text-white py-2 px-4 rounded ml-2">
-                      Update Date
+                    <button onClick={() => handleUpdateDate(booking._id)} className="bg-yellow-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
+                      <FaRegEdit />
+                      <span>Update</span>
                     </button>
-                    <button onClick={() => handleReviewModal(booking._id)} className="bg-blue-500 text-white py-2 px-4 rounded ml-2">
-                      Give Review
+                    <button onClick={() => handleReviewModal(booking._id)} className="bg-blue-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
+                      <FaStar />
+                      <span>Review</span>
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               );
             })}
           </tbody>
@@ -220,10 +230,15 @@ const MyBookingsPage = () => {
       {showUpdateDateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
-            <h2 className="text-xl font-bold mb-4">Update Booking Date</h2>
-            <DatePicker selected={newBookingDate} onChange={setNewBookingDate} minDate={new Date()} className="border p-2 rounded" />
+            <h2 className="text-xl font-bold mb-4">Select New Booking Date</h2>
+            <DatePicker 
+              selected={newBookingDate} 
+              onChange={(date) => setNewBookingDate(date)} 
+              minDate={new Date()} 
+              className="w-full border px-4 py-2 rounded mb-4"
+            />
             <button onClick={confirmUpdateDate} className="bg-blue-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Confirm Update
+              Update Date
             </button>
             <button onClick={() => setShowUpdateDateModal(false)} className="bg-red-500 text-white py-2 px-4 rounded mt-4 w-full">
               Cancel
@@ -236,37 +251,31 @@ const MyBookingsPage = () => {
       {showReviewModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
-            <h2 className="text-xl font-bold mb-4">Write a Review</h2>
-            <div>
-              <label className="block mb-2">Username:</label>
-              <input
-                type="text"
-                value={user.email}
-                readOnly
-                className="border p-2 rounded w-full bg-gray-100"
-              />
-            </div>
-            <div>
-              <label className="block mb-2">Rating (1 to 5):</label>
-              <input
-                type="number"
+            <h2 className="text-xl font-bold mb-4">Leave a Review</h2>
+            <div className="mb-4">
+              <label htmlFor="rating" className="block mb-2">Rating</label>
+              <select
                 name="rating"
+                id="rating"
                 value={reviewData.rating}
                 onChange={handleReviewChange}
-                min="1"
-                max="5"
-                className="border p-2 rounded w-full"
-              />
+                className="w-full border px-4 py-2 rounded"
+              >
+                {[1, 2, 3, 4, 5].map((rate) => (
+                  <option key={rate} value={rate}>{rate}</option>
+                ))}
+              </select>
             </div>
-            <div className="mt-4">
-              <label className="block mb-2">Comment:</label>
+            <div className="mb-4">
+              <label htmlFor="comment" className="block mb-2">Comment</label>
               <textarea
                 name="comment"
+                id="comment"
                 value={reviewData.comment}
                 onChange={handleReviewChange}
-                className="border p-2 rounded w-full"
+                className="w-full border px-4 py-2 rounded"
                 rows="4"
-              />
+              ></textarea>
             </div>
             <button onClick={submitReview} className="bg-blue-500 text-white py-2 px-4 rounded mt-4 w-full">
               Submit Review

@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from './AuthProvider';
 import { FaStar, FaCalendarAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 const RoomDetailsPage = () => {
   const { roomId } = useParams();
@@ -44,18 +45,21 @@ const RoomDetailsPage = () => {
 
   const handleBooking = () => {
     if (!user) {
-      alert('Please log in to book this room');
-      navigate('/login');
+      Swal.fire({
+        title: 'Please log in to book this room',
+        icon: 'warning',
+        confirmButtonText: 'Go to Login',
+      }).then(() => navigate('/login'));
       return;
     }
 
     if (!bookingDate || !checkOutDate) {
-      alert('Please select both check-in and check-out dates');
+      Swal.fire('Please select both check-in and check-out dates', '', 'error');
       return;
     }
 
     if (checkOutDate <= bookingDate) {
-      alert('Check-out date must be after the check-in date');
+      Swal.fire('Check-out date must be after the check-in date', '', 'error');
       return;
     }
 
@@ -87,13 +91,13 @@ const RoomDetailsPage = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          alert('Booking successful!');
+          Swal.fire('Booking successful!', '', 'success');
           setRoom({ ...room, isAvailable: false });
         } else {
-          alert('Booking failed: ' + data.message);
+          Swal.fire('Booking Successfully Done', data.message, 'success');
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => Swal.fire('Error', err.message, 'error'));
 
     // Close the modal after booking
     setShowModal(false);
@@ -101,13 +105,16 @@ const RoomDetailsPage = () => {
 
   const handlePostReview = () => {
     if (!user) {
-      alert('Please log in to post a review');
-      navigate('/login');
+      Swal.fire({
+        title: 'Please log in to post a review',
+        icon: 'warning',
+        confirmButtonText: 'Go to Login',
+      }).then(() => navigate('/login'));
       return;
     }
 
     if (!reviewRating || !reviewText.trim()) {
-      alert('Please provide a rating and comment');
+      Swal.fire('Please provide a rating and comment', '', 'error');
       return;
     }
 
@@ -125,15 +132,15 @@ const RoomDetailsPage = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === 'Review added successfully') {
-          alert('Review posted!');
+          Swal.fire('Review posted!', '', 'success');
           setReviews([...reviews, { user: user.email, rating: reviewRating, comment: reviewText }]);
           setReviewText('');
           setReviewRating(0);
         } else {
-          alert('Error posting review: ' + data.message);
+          Swal.fire('Error posting review', data.message, 'error');
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => Swal.fire('Error', err.message, 'error'));
   };
 
   if (loading) return <div>Loading...</div>;
@@ -162,17 +169,17 @@ const RoomDetailsPage = () => {
           <h2 className="text-2xl font-semibold mb-2 flex items-center gap-2">
             <FaCalendarAlt /> Select Booking Dates
           </h2>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             <DatePicker
               selected={bookingDate}
               onChange={setBookingDate}
-              className="input w-full border rounded-md p-2"
+              className="input w-full sm:w-1/2 border rounded-md p-2"
               placeholderText="Check-in Date"
             />
             <DatePicker
               selected={checkOutDate}
               onChange={setCheckOutDate}
-              className="input w-full border rounded-md p-2"
+              className="input w-full sm:w-1/2 border rounded-md p-2"
               placeholderText="Check-out Date"
             />
           </div>
@@ -189,7 +196,7 @@ const RoomDetailsPage = () => {
       {/* Modal for booking confirmation */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full sm:w-96">
             <h2 className="text-2xl font-semibold mb-4">Confirm Your Booking</h2>
             <p><strong>Room:</strong> {roomBookingDetails.roomName}</p>
             <p><strong>Price:</strong> {roomBookingDetails.roomPrice} USD/night</p>
