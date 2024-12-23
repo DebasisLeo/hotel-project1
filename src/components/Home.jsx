@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { FaStar } from 'react-icons/fa';
 import banner1 from '../assets/banner1.png';
 import banner2 from '../assets/banner2.png';
 import banner3 from '../assets/banner3.png';
@@ -9,6 +10,9 @@ import banner4 from '../assets/banner4.png';
 import offers from '../assets/offers.jpg';
 import g from '../assets/g.png';
 import { motion } from 'framer-motion';
+import { FaDollarSign } from 'react-icons/fa';
+import { MdOutlineBedroomParent } from 'react-icons/md';
+import { FiArrowRightCircle } from 'react-icons/fi';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Slider from 'react-slick';
@@ -286,48 +290,67 @@ const Home = () => {
       </section>
 
       {/* Featured Rooms Section */}
-      <section className="py-10 px-4">
-        <h2 className="text-2xl font-bold text-center mb-6">Featured Rooms</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {featuredRooms.slice(0, 6).map((room) => (
-            <div key={room.id} className="border rounded-lg shadow-md overflow-hidden" data-aos="fade-up">
-              <img src={room.images} alt={room.name} className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="text-xl font-bold mb-2">{room.name}</h3>
-                <p className="text-gray-700 mb-4">{room.description}</p>
-                <p className="text-green-600 font-bold mb-4">{room.price}</p>
-                <Link to={`/rooms/${room._id}`} key={room.id} className="block text-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
-                  Book Now
-                </Link>
-              </div>
+      <section className="py-10 px-4 bg-gray-100">
+      <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">Featured Rooms</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {featuredRooms.slice(0, 6).map((room) => (
+          <div
+            key={room.id}
+            className="border rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-xl transition-transform transform hover:-translate-y-2"
+            data-aos="fade-up"
+          >
+            <img
+              src={room.images}
+              alt={room.name}
+              className="w-full h-52 object-cover"
+            />
+            <div className="p-5">
+              <h3 className="text-xl font-bold flex items-center gap-2 mb-3 text-gray-700">
+                <MdOutlineBedroomParent className="text-blue-500" /> {room.name}
+              </h3>
+              <p className="text-gray-600 mb-4 text-sm">{room.description}</p>
+              <p className="text-green-600 font-bold text-lg flex items-center gap-1 mb-5">
+                <FaDollarSign /> {room.price}
+              </p>
+              <Link
+                to={`/rooms/${room._id}`}
+                className="flex items-center justify-center gap-2 px-5 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition"
+              >
+                Book Now <FiArrowRightCircle />
+              </Link>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        ))}
+      </div>
+    </section>
 
       {/* Testimonial Carousel */}
       <section className="py-10 px-4 bg-gray-50">
         <h2 className="text-2xl font-bold text-center mb-6">Guest Reviews</h2>
         <div className="max-w-4xl mx-auto">
-          <Slider {...sliderSettings}>
-            {reviews.length > 0 ? (
-              reviews.map((review) => (
-                <div key={review._id} className="px-4 py-6 bg-white rounded-lg shadow-md">
-                  <p className="text-gray-700 text-lg mb-4">"{review?.comment}"</p>
-                  <p className="text-gray-700 text-lg mb-4">{convertToBDTime(review?.createdAt)}</p>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold">{review.user}</span>
-                    <span className="text-sm text-yellow-500">
-                      {'⭐'.repeat(review.rating)} 
-                    </span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No reviews yet.</p>
-            )}
-          </Slider>
+        <Slider {...sliderSettings}>
+      {reviews.length > 0 ? (
+        reviews.map((review) => (
+          <div
+            key={review._id}
+            className="px-8 py-10 bg-gradient-to-br from-purple-50 via-indigo-100 to-pink-50 rounded-2xl shadow-2xl transform transition-all hover:scale-105 duration-300"
+          >
+            <p className="text-gray-900 text-xl font-medium italic mb-4">“{review?.comment}”</p>
+            <p className="text-gray-500 text-sm mb-6">{convertToBDTime(review?.createdAt)}</p>
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-semibold text-indigo-600">{review.user}</span>
+              <span className="flex items-center text-yellow-400">
+                {Array.from({ length: review.rating }).map((_, index) => (
+                  <FaStar key={index} className="text-xl" />
+                ))}
+              </span>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-center text-gray-600 text-lg font-medium">No reviews yet.</p>
+      )}
+    </Slider>
         </div>
       </section>
 
