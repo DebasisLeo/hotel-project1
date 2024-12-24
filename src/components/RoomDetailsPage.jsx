@@ -52,17 +52,23 @@ const RoomDetailsPage = () => {
       }).then(() => navigate('/login'));
       return;
     }
-
+  
     if (!bookingDate || !checkOutDate) {
       Swal.fire('Please select both check-in and check-out dates', '', 'error');
       return;
     }
-
+  
     if (checkOutDate <= bookingDate) {
       Swal.fire('Check-out date must be after the check-in date', '', 'error');
       return;
     }
-
+  
+    // Check if room is available, if not show a SweetAlert
+    if (!room.isAvailable) {
+      Swal.fire('Sorry, this room is not available.', '', 'error');
+      return;
+    }
+  
     // Set room booking details for the modal
     setRoomBookingDetails({
       roomName: room.name,
@@ -71,10 +77,11 @@ const RoomDetailsPage = () => {
       checkOutDate,
       description: room.description,
     });
-
+  
     // Show the modal
     setShowModal(true);
   };
+  
 
   const handleConfirmBooking = () => {
     fetch(`http://localhost:3000/rooms/${roomId}/book`, {
@@ -186,7 +193,7 @@ const RoomDetailsPage = () => {
           <button
             onClick={handleBooking}
             className="bg-blue-600 text-white px-6 py-2 mt-4 rounded-lg hover:bg-blue-700 transition-all"
-            disabled={!room.isAvailable}
+            // disabled={!room.isAvailable}
           >
             Book Now
           </button>

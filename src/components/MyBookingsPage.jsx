@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { AuthContext } from './AuthProvider';
-import { FaRegEdit, FaTrashAlt, FaStar } from 'react-icons/fa'; // Importing React icons
+import { FaRegEdit, FaTrashAlt, FaStar } from 'react-icons/fa'; 
 import { motion } from 'framer-motion';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2';
+import axios from 'axios'; 
 
 const MyBookingsPage = () => {
   const { user } = useContext(AuthContext); 
@@ -20,22 +21,26 @@ const MyBookingsPage = () => {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:3000/bookings?userEmail=${user.email}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setBookings(data);
-          data.forEach((booking) => {
-            fetch(`http://localhost:3000/rooms/${booking.roomId}`)
-              .then((response) => response.json())
-              .then((roomData) => {
+      axios(`http://localhost:3000/bookings?userEmail=${user.email}`,{withCredentials:true})
+        .then(res => {
+          setBookings(res.data);
+          // Fetch room data for each booking
+          res.data.forEach((booking) => {
+            axios(`http://localhost:3000/rooms/${booking.roomId}`)
+              .then((response) => {
                 setRooms((prevRooms) => [
                   ...prevRooms,
-                  { roomId: booking.roomId, ...roomData },
+                  { roomId: booking.roomId, ...response.data },
                 ]);
+              })
+              .catch((err) => {
+                console.error('Error fetching room data:', err);
               });
           });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error('Error fetching bookings:', err);
+        });
     }
   }, [user]);
 
@@ -45,14 +50,15 @@ const MyBookingsPage = () => {
   };
 
   const confirmCancelBooking = () => {
-    fetch(`http://localhost:3000/bookings/${selectedBooking}/cancel`, {
-      method: 'DELETE',
-    })
-      .then((response) => response.json())
+    axios.delete(`http://localhost:3000/bookings/${selectedBooking}/cancel`)
       .then(() => {
         Swal.fire('Success', 'Booking canceled successfully', 'success'); // SweetAlert success
         setBookings(bookings.filter((booking) => booking._id !== selectedBooking));
         setShowCancelModal(false);
+      })
+      .catch(err => {
+        Swal.fire('Error', 'Error canceling booking. Please try again.', 'error'); // SweetAlert error
+        console.error(err);
       });
   };
 
@@ -71,10 +77,8 @@ const MyBookingsPage = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/bookings/${selectedBooking}/update`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bookingDate: newBookingDate }),
+    axios.put(`http://localhost:3000/bookings/${selectedBooking}/update`, {
+      bookingDate: newBookingDate,
     })
       .then(() => {
         Swal.fire('Success', 'Booking date updated successfully', 'success'); // SweetAlert success
@@ -82,6 +86,10 @@ const MyBookingsPage = () => {
           booking._id === selectedBooking ? { ...booking, bookingDate: newBookingDate } : booking
         ));
         setShowUpdateDateModal(false);
+      })
+      .catch(err => {
+        Swal.fire('Error', 'Error updating booking date. Please try again.', 'error'); // SweetAlert error
+        console.error(err);
       });
   };
 
@@ -116,22 +124,17 @@ const MyBookingsPage = () => {
     
     const roomId = selectedRoom.roomId;  
     
-    fetch(`http://localhost:3000/rooms/${roomId}/reviews`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user: user.email,
-        rating,
-        comment,
-      }),
+    axios.post(`http://localhost:3000/rooms/${roomId}/reviews`, {
+      user: user.email,
+      rating,
+      comment,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === 'Review added successfully') {
+      .then((response) => {
+        if (response.data.message === 'Review added successfully') {
           Swal.fire('Success', 'Review submitted successfully', 'success'); // SweetAlert success
           setShowReviewModal(false);
         } else {
-          Swal.fire('Error', data.message, 'error'); // SweetAlert error
+          Swal.fire('Error', response.data.message, 'error'); // SweetAlert error
         }
       })
       .catch((error) => {
@@ -183,7 +186,7 @@ const MyBookingsPage = () => {
                           alt={room.name}
                           className="w-16 h-16 object-cover rounded-full"
                         />
-                        <span className="ml-2  font-bold">{room.name}</span>
+                        <span className="ml-2 font-bold">{room.name}</span>
                       </>
                     ) : <p>Loading...</p>}
                   </td>
@@ -217,12 +220,18 @@ const MyBookingsPage = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
             <h2 className="text-xl font-bold mb-4">Confirm Booking Cancellation</h2>
             <p>Are you sure you want to cancel this booking?</p>
-            <button onClick={confirmCancelBooking} className="bg-green-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Yes, Cancel Booking
-            </button>
-            <button onClick={() => setShowCancelModal(false)} className="bg-red-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Cancel
-            </button>
+            <div className="mt-4 flex justify-between">
+              <button 
+                className="bg-red-500 text-white px-4 py-2 rounded-full" 
+                onClick={confirmCancelBooking}>
+                Confirm
+              </button>
+              <button 
+                className="bg-gray-500 text-white px-4 py-2 rounded-full" 
+                onClick={() => setShowCancelModal(false)}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -231,19 +240,25 @@ const MyBookingsPage = () => {
       {showUpdateDateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
-            <h2 className="text-xl font-bold mb-4">Select New Booking Date</h2>
-            <DatePicker 
-              selected={newBookingDate} 
-              onChange={(date) => setNewBookingDate(date)} 
-              minDate={new Date()} 
-              className="w-full border px-4 py-2 rounded mb-4"
+            <h2 className="text-xl font-bold mb-4">Update Booking Date</h2>
+            <DatePicker
+              selected={newBookingDate}
+              onChange={(date) => setNewBookingDate(date)}
+              minDate={new Date()}
+              className="border p-2 rounded w-full"
             />
-            <button onClick={confirmUpdateDate} className="bg-blue-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Update Date
-            </button>
-            <button onClick={() => setShowUpdateDateModal(false)} className="bg-red-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Cancel
-            </button>
+            <div className="mt-4 flex justify-between">
+              <button 
+                className="bg-blue-500 text-white px-4 py-2 rounded-full"
+                onClick={confirmUpdateDate}>
+                Confirm
+              </button>
+              <button 
+                className="bg-gray-500 text-white px-4 py-2 rounded-full"
+                onClick={() => setShowUpdateDateModal(false)}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -252,51 +267,46 @@ const MyBookingsPage = () => {
       {showReviewModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
-            <h2 className="text-xl font-bold mb-4">Leave a Review</h2>
-            <div className="mb-4">
-              <label htmlFor="rating" className="block mb-2">Rating</label>
-              <select
-                name="rating"
+            <h2 className="text-xl font-bold mb-4">Submit Review</h2>
+            <div>
+              <label htmlFor="rating" className="block mb-2">Rating (1-5):</label>
+              <input
+                type="number"
                 id="rating"
+                name="rating"
                 value={reviewData.rating}
                 onChange={handleReviewChange}
-                className="w-full border px-4 py-2 rounded"
-              >
-                {[1, 2, 3, 4, 5].map((rate) => (
-                  <option key={rate} value={rate}>{rate}</option>
-                ))}
-              </select>
+                min="1"
+                max="5"
+                className="border p-2 rounded w-full"
+              />
             </div>
-            <div className="mb-4">
-              <label htmlFor="comment" className="block mb-2">Comment</label>
+            <div>
+              <label htmlFor="comment" className="block mb-2">Comment:</label>
               <textarea
-                name="comment"
                 id="comment"
+                name="comment"
                 value={reviewData.comment}
                 onChange={handleReviewChange}
-                className="w-full border px-4 py-2 rounded"
-                rows="4"
-              ></textarea>
+                rows="3"
+                className="border p-2 rounded w-full"
+              />
             </div>
-            <button onClick={submitReview} className="bg-blue-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Submit Review
-            </button>
-            <button onClick={() => setShowReviewModal(false)} className="bg-red-500 text-white py-2 px-4 rounded mt-4 w-full">
-              Cancel
-            </button>
+            <div className="mt-4 flex justify-between">
+              <button 
+                className="bg-blue-500 text-white px-4 py-2 rounded-full"
+                onClick={submitReview}>
+                Submit Review
+              </button>
+              <button 
+                className="bg-gray-500 text-white px-4 py-2 rounded-full"
+                onClick={() => setShowReviewModal(false)}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
-      <div className="flex justify-center mt-6">
-  <Link to="/rooms">
-    <button
-      className="px-6 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-purple-300"
-    >
-      Back To Rooms
-    </button>
-  </Link>
-</div>
-
     </div>
   );
 };
