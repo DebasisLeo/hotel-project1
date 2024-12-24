@@ -21,12 +21,12 @@ const MyBookingsPage = () => {
 
   useEffect(() => {
     if (user) {
-      axios(`http://localhost:3000/bookings?userEmail=${user.email}`,{withCredentials:true})
+      axios(`https://hotel-server-flax.vercel.app/bookings?userEmail=${user.email}`,{withCredentials:true})
         .then(res => {
           setBookings(res.data);
           // Fetch room data for each booking
           res.data.forEach((booking) => {
-            axios(`http://localhost:3000/rooms/${booking.roomId}`)
+            axios(`https://hotel-server-flax.vercel.app/rooms/${booking.roomId}`)
               .then((response) => {
                 setRooms((prevRooms) => [
                   ...prevRooms,
@@ -50,7 +50,7 @@ const MyBookingsPage = () => {
   };
 
   const confirmCancelBooking = () => {
-    axios.delete(`http://localhost:3000/bookings/${selectedBooking}/cancel`)
+    axios.delete(`https://hotel-server-flax.vercel.app/bookings/${selectedBooking}/cancel`)
       .then(() => {
         Swal.fire('Success', 'Booking canceled successfully', 'success'); // SweetAlert success
         setBookings(bookings.filter((booking) => booking._id !== selectedBooking));
@@ -77,7 +77,7 @@ const MyBookingsPage = () => {
       return;
     }
 
-    axios.put(`http://localhost:3000/bookings/${selectedBooking}/update`, {
+    axios.put(`https://hotel-server-flax.vercel.app/bookings/${selectedBooking}/update`, {
       bookingDate: newBookingDate,
     })
       .then(() => {
@@ -124,7 +124,7 @@ const MyBookingsPage = () => {
     
     const roomId = selectedRoom.roomId;  
     
-    axios.post(`http://localhost:3000/rooms/${roomId}/reviews`, {
+    axios.post(`https://hotel-server-flax.vercel.app/rooms/${roomId}/reviews`, {
       user: user.email,
       rating,
       comment,

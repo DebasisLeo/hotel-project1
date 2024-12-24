@@ -28,7 +28,7 @@ const Home = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await fetch('http://localhost:3000/rooms');
+        const response = await fetch('https://hotel-server-flax.vercel.app/rooms');
         const data = await response.json();
         setFeaturedRooms(data);
       } catch (error) {
@@ -38,7 +38,7 @@ const Home = () => {
 
     const fetchAllReviews = async () => {
       try {
-        const response = await fetch('http://localhost:3000/reviews');
+        const response = await fetch('https://hotel-server-flax.vercel.app/reviews');
         const data = await response.json();
         setReviews(data);
       } catch (error) {

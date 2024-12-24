@@ -13,7 +13,7 @@ const RoomsPage = () => {
       ...(maxPrice && { maxPrice }),
     }).toString();
 
-    fetch(`http://localhost:3000/rooms?${queryParams}`)
+    fetch(`https://hotel-server-flax.vercel.app/rooms?${queryParams}`)
       .then(response => response.json())
       .then(data => setRooms(data))
       .catch(err => console.error('Error fetching rooms:', err));

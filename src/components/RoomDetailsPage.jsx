@@ -24,12 +24,12 @@ const RoomDetailsPage = () => {
 
   useEffect(() => {
     if (roomId) {
-      fetch(`http://localhost:3000/rooms/${roomId}`)
+      fetch(`https://hotel-server-flax.vercel.app/rooms/${roomId}`)
         .then((response) => response.json())
         .then((data) => setRoom(data))
         .catch((err) => console.error('Error fetching room details:', err));
 
-      fetch(`http://localhost:3000/rooms/${roomId}/reviews`)
+      fetch(`https://hotel-server-flax.vercel.app/rooms/${roomId}/reviews`)
         .then((response) => response.json())
         .then((data) => {
           setReviews(Array.isArray(data) ? data : []);
@@ -84,7 +84,7 @@ const RoomDetailsPage = () => {
   
 
   const handleConfirmBooking = () => {
-    fetch(`http://localhost:3000/rooms/${roomId}/book`, {
+    fetch(`https://hotel-server-flax.vercel.app/rooms/${roomId}/book`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ const RoomDetailsPage = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/rooms/${roomId}/reviews`, {
+    fetch(`https://hotel-server-flax.vercel.app/rooms/${roomId}/reviews`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
