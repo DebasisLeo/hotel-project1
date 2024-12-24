@@ -230,9 +230,9 @@ const Home = () => {
       <div className="text-center">
         <h2 className="text-4xl font-bold mb-4">Welcome to Our Hotel</h2>
         <p className="mb-6 text-lg">Experience luxury and comfort like never before. Explore our rooms and book your stay today.</p>
-        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
           Explore Rooms
-        </a>
+        </Link>
       </div>
       <div>
         <a href="#slide4" className="btn btn-circle text-white">❮</a>
@@ -248,9 +248,9 @@ const Home = () => {
       <div className="text-center">
         <h2 className="text-4xl font-bold mb-4">Discover Your Perfect Stay</h2>
         <p className="mb-6 text-lg">Relax and unwind in our elegant rooms, designed with your comfort in mind.</p>
-        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          Book Now
-        </a>
+        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          Explore Rooms
+        </Link>
       </div>
       <div>
         <a href="#slide1" className="btn btn-circle text-white">❮</a>
@@ -266,9 +266,9 @@ const Home = () => {
       <div className="text-center">
         <h2 className="text-4xl font-bold mb-4">Luxury Awaits You</h2>
         <p className="mb-6 text-lg">Indulge in the finest amenities and service during your stay at our hotel.</p>
-        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          View Rooms
-        </a>
+        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          Explore Rooms
+        </Link>
       </div>
       <div>
         <a href="#slide2" className="btn btn-circle text-white">❮</a>
@@ -284,9 +284,9 @@ const Home = () => {
       <div className="text-center">
         <h2 className="text-4xl font-bold mb-4">Unforgettable Experiences</h2>
         <p className="mb-6 text-lg">Let us take care of every detail of your stay. You deserve the best.</p>
-        <a href="#rooms" className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          Explore More
-        </a>
+        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
+          Explore Rooms
+        </Link>n
       </div>
       <div>
         <a href="#slide3" className="btn btn-circle text-white">❮</a>

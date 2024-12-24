@@ -263,51 +263,63 @@ const MyBookingsPage = () => {
         </div>
       )}
 
-      {/* Review Modal */}
-      {showReviewModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
-            <h2 className="text-xl font-bold mb-4">Submit Review</h2>
-            <div>
-              <label htmlFor="rating" className="block mb-2">Rating (1-5):</label>
-              <input
-                type="number"
-                id="rating"
-                name="rating"
-                value={reviewData.rating}
-                onChange={handleReviewChange}
-                min="1"
-                max="5"
-                className="border p-2 rounded w-full"
-              />
-            </div>
-            <div>
-              <label htmlFor="comment" className="block mb-2">Comment:</label>
-              <textarea
-                id="comment"
-                name="comment"
-                value={reviewData.comment}
-                onChange={handleReviewChange}
-                rows="3"
-                className="border p-2 rounded w-full"
-              />
-            </div>
-            <div className="mt-4 flex justify-between">
-              <button 
-                className="bg-blue-500 text-white px-4 py-2 rounded-full"
-                onClick={submitReview}>
-                Submit Review
-              </button>
-              <button 
-                className="bg-gray-500 text-white px-4 py-2 rounded-full"
-                onClick={() => setShowReviewModal(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-         
-        </div>
-      )}
+      
+    {/* Review Modal */}
+{showReviewModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-80 mx-auto">
+      <h2 className="text-xl font-bold mb-4">Submit Review</h2>
+      <div>
+        <label htmlFor="username" className="block mb-2">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={user.displayName || 'Guest'} // Assuming `user.name` contains the logged-in user's name
+          readOnly
+          className="border p-2 rounded w-full bg-gray-200 text-gray-600"
+        />
+      </div>
+      <div className="mt-4">
+        <label htmlFor="rating" className="block mb-2">Rating (1-5):</label>
+        <input
+          type="number"
+          id="rating"
+          name="rating"
+          value={reviewData.rating}
+          onChange={handleReviewChange}
+          min="1"
+          max="5"
+          className="border p-2 rounded w-full"
+        />
+      </div>
+      <div className="mt-4">
+        <label htmlFor="comment" className="block mb-2">Comment:</label>
+        <textarea
+          id="comment"
+          name="comment"
+          value={reviewData.comment}
+          onChange={handleReviewChange}
+          rows="3"
+          className="border p-2 rounded w-full"
+        />
+      </div>
+      <div className="mt-4 flex justify-between">
+        <button 
+          className="bg-blue-500 text-white px-4 py-2 rounded-full"
+          onClick={submitReview}>
+          Submit Review
+        </button>
+        <button 
+          className="bg-gray-500 text-white px-4 py-2 rounded-full"
+          onClick={() => setShowReviewModal(false)}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
        <div className="flex justify-center mt-6">
   <Link to="/rooms">
     <button
