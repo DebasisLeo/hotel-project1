@@ -23,19 +23,19 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/" className="hover:text-primary flex items-center gap-2">
+        <NavLink to="/" className="hover:text-primary text-xl flex items-center gap-2">
           <FaHome />
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink to="/rooms" className="hover:text-primary flex items-center gap-2">
+        <NavLink to="/rooms" className="hover:text-primary text-xl flex items-center gap-2">
           <FaRocket />
           Rooms
         </NavLink>
       </li>
       <li>
-        <NavLink to="/my-booking" className="hover:text-primary flex items-center gap-2">
+        <NavLink to="/my-booking" className="hover:text-primary text-xl flex items-center gap-2">
           <FaBookOpen />
           My Bookings
         </NavLink>
@@ -44,7 +44,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 via-purple-600 to-indigo-700 shadow-md">
+    <div className="bg-gradient-to-r rounded-full from-gray-800 to-gray-700 shadow-md sticky top-0 z-50">
       
       {/* Helmet for dynamic title and meta data */}
       <Helmet>
@@ -53,14 +53,14 @@ const Navbar = () => {
       </Helmet>
 
       {user && (
-        <div className="flex justify-center items-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-4 animate__animated animate__fadeIn">
+        <div className="flex  justify-center items-center bg-gradient-to-r from-gray-800 to-gray-700 text-white py-4 animate__animated animate__fadeIn">
           <h2 className="text-2xl md:text-4xl lg:text-5xl font-semibold animate__bounce text-center">
             WELCOME, <span className="text-yellow-300">{user.displayName}</span>! 🎉
           </h2>
         </div>
       )}
 
-      <div className="navbar bg-base-100 w-full px-4 lg:w-11/12 mx-auto py-4">
+      <div className="navbar rounded-full bg-base-100 w-full px-4 lg:w-11/12 mx-auto py-4">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -100,13 +100,13 @@ const Navbar = () => {
           {user ? (
             <div className="flex items-center space-x-4 animate__animated animate__fadeIn animate__delay-2s">
               <img
-                className="w-10 h-10 rounded-full border-2 border-primary shadow-md hover:scale-105 transform transition-all"
+                className="w-14 h-14 rounded-full border-2 border-primary shadow-md hover:scale-105 transform transition-all"
                 src={user.photoURL}
                 alt={user.displayName}
               />
               <button
                 onClick={handleSignOut}
-                className="btn btn-outline btn-primary flex items-center gap-2 hover:scale-110 transform transition-all"
+                className="btn btn-outline btn-primary text-xl flex items-center gap-2 hover:scale-110 transform transition-all"
               >
                 <FaSignOutAlt />
                 Sign Out

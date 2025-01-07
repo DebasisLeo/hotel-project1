@@ -6,7 +6,7 @@ import Footer from './Footer';
 
 const Root = () => {
   return (
-    <div className='w-11/12 mx-auto'>
+    <div className='w-11/12 mx-auto bg-gradient-to-r from-gray-800 to-cyan-200'>
       
       <Helmet>
         <title>My LuxStay Hotel</title>

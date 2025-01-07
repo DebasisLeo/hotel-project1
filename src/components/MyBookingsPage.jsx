@@ -148,7 +148,7 @@ const MyBookingsPage = () => {
   return (
     <div className="container mx-auto px-6 py-8">
       <motion.h1 
-        className="text-3xl font-bold mb-4 text-center text-indigo-600"
+        className="text-3xl font-bold mb-4 text-center text-white"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -157,7 +157,7 @@ const MyBookingsPage = () => {
       </motion.h1>
 
       {bookings.length === 0 ? (
-        <p className="text-center text-gray-500">You have no bookings.</p>
+        <p className="text-center text-white">You have no bookings.</p>
       ) : (
         <div className="overflow-x-auto">
           {/* For desktop/tablet view */}
@@ -190,14 +190,14 @@ const MyBookingsPage = () => {
                             alt={room.name}
                             className="w-16 h-16 object-cover rounded-full"
                           />
-                          <span className="ml-2 font-bold">{room.name}</span>
+                          <span className="ml-2 text-white font-bold">{room.name}</span>
                         </>
                       ) : <p>Loading...</p>}
                     </td>
-                    <td className="border-b px-4 py-2 font-bold">{new Date(booking.bookingDate).toLocaleDateString()}</td>
-                    <td className="border-b px-4 py-2 font-bold">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
-                    <td className="border-b px-4 py-2 font-bold">${room ? room.price : 'Loading...'}</td>
-                    <td className="border-b px-4 py-2 flex space-x-3">
+                    <td className="border-b text-white px-4 py-2 font-bold">{new Date(booking.bookingDate).toLocaleDateString()}</td>
+                    <td className="border-b text-white px-4 py-2 font-bold">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+                    <td className="border-b text-white px-4 py-2 font-bold">${room ? room.price : 'Loading...'}</td>
+                    <td className="border-b text-white  px-4 py-2 flex space-x-3">
                       <button onClick={() => handleCancelBooking(booking._id)} className="bg-red-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
                         <FaTrashAlt />
                         <span>Cancel</span>

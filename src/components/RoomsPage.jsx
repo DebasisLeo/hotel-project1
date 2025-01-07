@@ -31,7 +31,7 @@ const RoomsPage = () => {
 
   return (
     <div className="container mx-auto px-6 py-8">
-      <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-800">Our Rooms</h1>
+      <h1 className="text-4xl font-extrabold text-center mb-8 text-white">Our Rooms</h1>
 
       {/* Price Filter Section */}
       <motion.form

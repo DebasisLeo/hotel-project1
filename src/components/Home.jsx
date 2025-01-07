@@ -91,7 +91,7 @@ const Home = () => {
      
      {/* Typewriter Text */}
 <div 
-  className="mb-8 text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 text-center" 
+  className="mb-8 text-5xl font-extrabold text-transparent bg-clip-text text-white text-center" 
   data-aos="fade-up"
 >
   <Typewriter
@@ -392,7 +392,7 @@ const Home = () => {
 
       {/* Map Section */}
       <section className="py-10 px-4">
-        <h2 className="text-2xl font-bold text-center mb-6">Find Us Here</h2>
+        <h2 className="text-4xl font-bold text-white text-center mb-6">Find Us Here</h2>
         <div className="w-full h-[400px]">
           <iframe
             title="Hotel Location"
