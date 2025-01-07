@@ -157,202 +157,123 @@ const MyBookingsPage = () => {
       </motion.h1>
 
       {bookings.length === 0 ? (
-  <p className="text-center text-gray-500">You have no bookings.</p>
-) : (
-  <div className="overflow-x-auto">
-    <motion.table className="table-auto w-full border-collapse hidden sm:table">
-      <thead className="bg-gray-100">
-        <tr>
-          <th className="border-b px-4 py-2">Room</th>
-          <th className="border-b px-4 py-2">Booking Date</th>
-          <th className="border-b px-4 py-2">Check-out Date</th>
-          <th className="border-b px-4 py-2">Price</th>
-          <th className="border-b px-4 py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {bookings.map((booking) => {
-          const room = rooms.find((room) => room.roomId === booking.roomId);
+        <p className="text-center text-gray-500">You have no bookings.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          {/* For desktop/tablet view */}
+          <motion.table className="table-auto w-full border-collapse hidden md:table">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border-b px-4 py-2">Room</th>
+                <th className="border-b px-4 py-2">Booking Date</th>
+                <th className="border-b px-4 py-2">Check-out Date</th>
+                <th className="border-b px-4 py-2">Price</th>
+                <th className="border-b px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((booking) => {
+                const room = rooms.find((room) => room.roomId === booking.roomId);
 
-          return (
-            <motion.tr
-              key={booking._id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <td className="border-b px-4 py-2">
-                {room ? (
-                  <>
-                    <img
-                      src={room.images}
-                      alt={room.name}
-                      className="w-16 h-16 object-cover rounded-full"
-                    />
-                    <span className="ml-2 font-bold">{room.name}</span>
-                  </>
-                ) : <p>Loading...</p>}
-              </td>
-              <td className="border-b px-4 py-2 font-bold">{new Date(booking.bookingDate).toLocaleDateString()}</td>
-              <td className="border-b px-4 py-2 font-bold">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
-              <td className="border-b px-4 py-2 font-bold">${room ? room.price : 'Loading...'}</td>
-              <td className="border-b px-4 py-2 flex space-x-3">
-                <button onClick={() => handleCancelBooking(booking._id)} className="bg-red-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
-                  <FaTrashAlt />
-                  <span>Cancel</span>
-                </button>
-                <button onClick={() => handleUpdateDate(booking._id)} className="bg-yellow-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
-                  <FaRegEdit />
-                  <span>Update</span>
-                </button>
-                <button onClick={() => handleReviewModal(booking._id)} className="bg-blue-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
-                  <FaStar />
-                  <span>Review</span>
-                </button>
-              </td>
-            </motion.tr>
-          );
-        })}
-      </tbody>
-    </motion.table>
+                return (
+                  <motion.tr
+                    key={booking._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <td className="border-b px-4 py-2">
+                      {room ? (
+                        <>
+                          <img
+                            src={room.images}
+                            alt={room.name}
+                            className="w-16 h-16 object-cover rounded-full"
+                          />
+                          <span className="ml-2 font-bold">{room.name}</span>
+                        </>
+                      ) : <p>Loading...</p>}
+                    </td>
+                    <td className="border-b px-4 py-2 font-bold">{new Date(booking.bookingDate).toLocaleDateString()}</td>
+                    <td className="border-b px-4 py-2 font-bold">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+                    <td className="border-b px-4 py-2 font-bold">${room ? room.price : 'Loading...'}</td>
+                    <td className="border-b px-4 py-2 flex space-x-3">
+                      <button onClick={() => handleCancelBooking(booking._id)} className="bg-red-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
+                        <FaTrashAlt />
+                        <span>Cancel</span>
+                      </button>
+                      <button onClick={() => handleUpdateDate(booking._id)} className="bg-yellow-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
+                        <FaRegEdit />
+                        <span>Update</span>
+                      </button>
+                      <button onClick={() => handleReviewModal(booking._id)} className="bg-blue-500 text-white py-2 px-4 rounded-full flex items-center space-x-2">
+                        <FaStar />
+                        <span>Review</span>
+                      </button>
+                    </td>
+                  </motion.tr>
+                );
+              })}
+            </tbody>
+          </motion.table>
 
-    {/* For mobile view */}
-    <div className="sm:hidden">
-      {bookings.map((booking) => {
-        const room = rooms.find((room) => room.roomId === booking.roomId);
-        return (
-          <motion.div
-            key={booking._id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white p-4 rounded-lg shadow-md mb-4"
-          >
-            <div className="flex items-center mb-4">
-              {room ? (
-                <>
-                  <img
-                    src={room.images}
-                    alt={room.name}
-                    className="w-16 h-16 object-cover rounded-full"
-                  />
-                  <span className="ml-4 font-bold">{room.name}</span>
-                </>
-              ) : <p>Loading...</p>}
-            </div>
-            <div className="mb-4">
-              <div className="font-semibold">Booking Date:</div>
-              <div>{new Date(booking.bookingDate).toLocaleDateString()}</div>
-            </div>
-            <div className="mb-4">
-              <div className="font-semibold">Check-out Date:</div>
-              <div>{new Date(booking.checkOutDate).toLocaleDateString()}</div>
-            </div>
-            <div className="mb-4">
-              <div className="font-semibold">Price:</div>
-              <div>${room ? room.price : 'Loading...'}</div>
-            </div>
-            <div className="flex justify-center items-center space-x-3">
-             <div>
-               <button
-                onClick={() => handleCancelBooking(booking._id)}
-                className="bg-red-500 text-white py-1 px-2 rounded-full flex items-center space-x-2 w-full mb-2"
-               >
-                <FaTrashAlt />
-                <span>Cancel</span>
-               </button>
-               <button
-                onClick={() => handleUpdateDate(booking._id)}
-                className="bg-yellow-500 text-white py-1 px-2 rounded-full flex items-center space-x-2 w-full mb-2"
-               >
-                <FaRegEdit />
-                <span>Update</span>
-               </button>
-               <button
-                onClick={() => handleReviewModal(booking._id)}
-                className="bg-blue-500 text-white py-1 px-2 rounded-full flex items-center space-x-2 w-full"
-               >
-                <FaStar />
-                <span>Review</span>
-               </button>
-             </div>
-            </div>
-          </motion.div>
-        );
-      })}
-    </div>
+          {/* For mobile view */}
+          <div className="md:hidden">
+            {bookings.map((booking) => {
+              const room = rooms.find((room) => room.roomId === booking.roomId);
 
-   {/* For tablet view */}
-   <div className="md:hidden lg:hidden">
-  {bookings.map((booking) => {
-    const room = rooms.find((room) => room.roomId === booking.roomId);
-    return (
-      <motion.div
-        key={booking._id}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white p-4 rounded-lg shadow-md mb-6"
-      >
-        <div className="flex items-center mb-4">
-          {room ? (
-            <>
-              <img
-                src={room.images}
-                alt={room.name}
-                className="w-16 h-16 object-cover rounded-full"
-              />
-              <span className="ml-4 font-bold text-lg">{room.name}</span>
-            </>
-          ) : <p>Loading...</p>}
+              return (
+                <motion.div
+                  key={booking._id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-white p-4 rounded-lg shadow-md mb-4"
+                >
+                  <div className="flex items-center mb-4">
+                    {room ? (
+                      <>
+                        <img
+                          src={room.images}
+                          alt={room.name}
+                          className="w-16 h-16 object-cover rounded-full"
+                        />
+                        <span className="ml-4 font-bold">{room.name}</span>
+                      </>
+                    ) : <p>Loading...</p>}
+                  </div>
+                  <div className="mb-4">
+                    <div className="font-semibold">Booking Date:</div>
+                    <div>{new Date(booking.bookingDate).toLocaleDateString()}</div>
+                  </div>
+                  <div className="mb-4">
+                    <div className="font-semibold">Check-out Date:</div>
+                    <div>{new Date(booking.checkOutDate).toLocaleDateString()}</div>
+                  </div>
+                  <div className="mb-4">
+                    <div className="font-semibold">Price:</div>
+                    <div>${room ? room.price : 'Loading...'}</div>
+                  </div>
+                  <div className="flex justify-center items-center space-x-3">
+                    <button onClick={() => handleCancelBooking(booking._id)} className="bg-red-500 text-white py-1 px-2 rounded-full flex items-center space-x-2 w-full mb-2">
+                      <FaTrashAlt />
+                      <span>Cancel</span>
+                    </button>
+                    <button onClick={() => handleUpdateDate(booking._id)} className="bg-yellow-500 text-white py-1 px-2 rounded-full flex items-center space-x-2 w-full mb-2">
+                      <FaRegEdit />
+                      <span>Update</span>
+                    </button>
+                    <button onClick={() => handleReviewModal(booking._id)} className="bg-blue-500 text-white py-1 px-2 rounded-full flex items-center space-x-2 w-full">
+                      <FaStar />
+                      <span>Review</span>
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-        <div className="mb-4">
-          <div className="font-semibold">Booking Date:</div>
-          <div>{new Date(booking.bookingDate).toLocaleDateString()}</div>
-        </div>
-        <div className="mb-4">
-          <div className="font-semibold">Check-out Date:</div>
-          <div>{new Date(booking.checkOutDate).toLocaleDateString()}</div>
-        </div>
-        <div className="mb-4">
-          <div className="font-semibold">Price:</div>
-          <div>${room ? room.price : 'Loading...'}</div>
-        </div>
-
-        {/* Action buttons positioned below */}
-        <div className="flex flex-col gap-4 mt-4">
-          <button
-            onClick={() => handleCancelBooking(booking._id)}
-            className="bg-red-500 text-white py-2 px-4 rounded-full flex items-center space-x-2 w-full"
-          >
-            <FaTrashAlt />
-            <span>Cancel</span>
-          </button>
-          <button
-            onClick={() => handleUpdateDate(booking._id)}
-            className="bg-yellow-500 text-white py-2 px-4 rounded-full flex items-center space-x-2 w-full"
-          >
-            <FaRegEdit />
-            <span>Update</span>
-          </button>
-          <button
-            onClick={() => handleReviewModal(booking._id)}
-            className="bg-blue-500 text-white py-2 px-4 rounded-full flex items-center space-x-2 w-full"
-          >
-            <FaStar />
-            <span>Review</span>
-          </button>
-        </div>
-      </motion.div>
-    );
-  })}
-</div>
-
-
-
-  </div>
-)}
-
+      )}
       {/* Cancel Booking Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
