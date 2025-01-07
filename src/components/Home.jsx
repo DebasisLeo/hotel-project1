@@ -19,6 +19,7 @@ import 'aos/dist/aos.css';
 import Slider from 'react-slick';
 import { FaWifi, FaSwimmingPool, FaSpa, FaBed } from 'react-icons/fa';
 
+
 const Home = () => {
   const [featuredRooms, setFeaturedRooms] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -35,6 +36,7 @@ const Home = () => {
         console.error('Error fetching rooms:', error);
       }
     };
+    
 
     const fetchAllReviews = async () => {
       try {
@@ -82,6 +84,7 @@ const Home = () => {
     autoplaySpeed: 5000,
     arrows: false,
   };
+  
 
   return (
     <div className="font-sans">
@@ -177,7 +180,7 @@ const Home = () => {
 
 {/* Special Offers Section */}
 <section
-  className="relative bg-cover bg-center h-[500px] mb-7"
+  className="relative bg-cover bg-center h-[400px] md:h-[500px] lg:h-[600px] mb-7"
   style={{ backgroundImage: `url(${offers})` }}
 >
   <motion.div
@@ -186,10 +189,10 @@ const Home = () => {
     animate={{ opacity: 1 }}
     transition={{ duration: 1 }}
   >
-    <div className="text-white px-8 md:px-16">
+    <div className="text-white px-6 md:px-12 lg:px-24">
       {/* Animated Heading */}
       <motion.h2
-        className="text-4xl font-bold mb-4"
+        className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -199,20 +202,21 @@ const Home = () => {
 
       {/* Animated Paragraph */}
       <motion.p
-        className="text-lg mb-6"
+        className="text-base md:text-lg lg:text-xl mb-6 text-gray-200 leading-relaxed"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        Save up to 50% on your next stay. Don't miss out on this limited-time offer!
+        Save up to <span className="font-bold text-yellow-400">50%</span> on your next stay. 
+        Experience luxury like never before with our hand-picked deals.
       </motion.p>
 
       {/* Animated Button */}
       <motion.a
         href="#offers"
-        className="px-8 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="inline-block px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-full shadow-lg hover:scale-105 transition-all duration-300 ease-in-out"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
         Book Now
@@ -221,80 +225,169 @@ const Home = () => {
   </motion.div>
 </section>
 
+
       {/* Banner Section with Slider */}
       <div className="carousel w-full relative">
-  {/* Slide 1 */}
-  <div id="slide1" className="carousel-item relative w-full">
-    <img src={banner1} className="w-full" alt="Banner 1" />
-    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold mb-4">Welcome to Our Hotel</h2>
-        <p className="mb-6 text-lg">Experience luxury and comfort like never before. Explore our rooms and book your stay today.</p>
-        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          Explore Rooms
-        </Link>
+      {/* Slide 1 */}
+      <div id="slide1" className="carousel-item relative w-full">
+        <motion.img
+          src={banner1}
+          className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+          alt="Banner 1"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-5 md:px-10">
+          <div className="text-center w-full">
+            <motion.h2
+              className="text-4xl font-bold text-white mb-4"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Welcome to Our Hotel
+            </motion.h2>
+            <motion.p
+              className="text-lg text-white mb-6"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              Experience luxury and comfort like never before. Explore our rooms and book your stay today.
+            </motion.p>
+            <Link
+              to="/rooms"
+              className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3"
+            >
+              Explore Rooms
+            </Link>
+          </div>
+          <div>
+            <a href="#slide4" className="btn btn-circle text-white">❮</a>
+            <a href="#slide2" className="btn btn-circle text-white">❯</a>
+          </div>
+        </div>
       </div>
-      <div>
-        <a href="#slide4" className="btn btn-circle text-white">❮</a>
-        <a href="#slide2" className="btn btn-circle text-white">❯</a>
-      </div>
-    </div>
-  </div>
 
-  {/* Slide 2 */}
-  <div id="slide2" className="carousel-item relative w-full">
-    <img src={banner2} className="w-full" alt="Banner 2" />
-    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold mb-4">Discover Your Perfect Stay</h2>
-        <p className="mb-6 text-lg">Relax and unwind in our elegant rooms, designed with your comfort in mind.</p>
-        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          Explore Rooms
-        </Link>
+      {/* Slide 2 */}
+      <div id="slide2" className="carousel-item relative w-full">
+        <motion.img
+          src={banner2}
+          className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+          alt="Banner 2"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-5 md:px-10">
+          <div className="text-center w-full">
+            <motion.h2
+              className="text-4xl font-bold text-white mb-4"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Discover Your Perfect Stay
+            </motion.h2>
+            <motion.p
+              className="text-lg text-white mb-6"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              Relax and unwind in our elegant rooms, designed with your comfort in mind.
+            </motion.p>
+            <Link
+              to="/rooms"
+              className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3"
+            >
+              Explore Rooms
+            </Link>
+          </div>
+          <div>
+            <a href="#slide1" className="btn btn-circle text-white">❮</a>
+            <a href="#slide3" className="btn btn-circle text-white">❯</a>
+          </div>
+        </div>
       </div>
-      <div>
-        <a href="#slide1" className="btn btn-circle text-white">❮</a>
-        <a href="#slide3" className="btn btn-circle text-white">❯</a>
-      </div>
-    </div>
-  </div>
 
-  {/* Slide 3 */}
-  <div id="slide3" className="carousel-item relative w-full">
-    <img src={banner3} className="w-full" alt="Banner 3" />
-    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold mb-4">Luxury Awaits You</h2>
-        <p className="mb-6 text-lg">Indulge in the finest amenities and service during your stay at our hotel.</p>
-        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          Explore Rooms
-        </Link>
+      {/* Slide 3 */}
+      <div id="slide3" className="carousel-item relative w-full">
+        <motion.img
+          src={banner3}
+          className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+          alt="Banner 3"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-5 md:px-10">
+          <div className="text-center w-full">
+            <motion.h2
+              className="text-4xl font-bold text-white mb-4"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Luxury Awaits You
+            </motion.h2>
+            <motion.p
+              className="text-lg text-white mb-6"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              Indulge in the finest amenities and service during your stay at our hotel.
+            </motion.p>
+            <Link
+              to="/rooms"
+              className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3"
+            >
+              Explore Rooms
+            </Link>
+          </div>
+          <div>
+            <a href="#slide2" className="btn btn-circle text-white">❮</a>
+            <a href="#slide4" className="btn btn-circle text-white">❯</a>
+          </div>
+        </div>
       </div>
-      <div>
-        <a href="#slide2" className="btn btn-circle text-white">❮</a>
-        <a href="#slide4" className="btn btn-circle text-white">❯</a>
-      </div>
-    </div>
-  </div>
 
-  {/* Slide 4 */}
-  <div id="slide4" className="carousel-item relative w-full">
-    <img src={banner4} className="w-full" alt="Banner 4" />
-    <div className="absolute left-5 right-5 top-1/2 transform -translate-y-1/2 flex justify-between text-white">
-      <div className="text-center">
-        <h2 className="text-4xl font-bold mb-4">Unforgettable Experiences</h2>
-        <p className="mb-6 text-lg">Let us take care of every detail of your stay. You deserve the best.</p>
-        <Link to='/rooms' className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3">
-          Explore Rooms
-        </Link>n
-      </div>
-      <div>
-        <a href="#slide3" className="btn btn-circle text-white">❮</a>
-        <a href="#slide1" className="btn btn-circle text-white">❯</a>
+      {/* Slide 4 */}
+      <div id="slide4" className="carousel-item relative w-full">
+        <motion.img
+          src={banner4}
+          className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
+          alt="Banner 4"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-5 md:px-10">
+          <div className="text-center w-full">
+            <motion.h2
+              className="text-4xl font-bold text-white mb-4"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Unforgettable Experiences
+            </motion.h2>
+            <motion.p
+              className="text-lg text-white mb-6"
+              animate={{ opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              Let us take care of every detail of your stay. You deserve the best.
+            </motion.p>
+            <Link
+              to="/rooms"
+              className="btn bg-red-500 text-white rounded-full hover:bg-red-600 transition px-6 py-3"
+            >
+              Explore Rooms
+            </Link>
+          </div>
+          <div>
+            <a href="#slide3" className="btn btn-circle text-white">❮</a>
+            <a href="#slide1" className="btn btn-circle text-white">❯</a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 
       {/* Map Section */}
@@ -314,20 +407,41 @@ const Home = () => {
       </section>
 
       {/* Featured Rooms Section */}
-      <section className="py-10 px-4 bg-gray-100">
-      <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">Featured Rooms</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <section className="py-10 px-4 bg-gradient-to-r from-cyan-200 to-pink-300">
+      {/* Animated Heading */}
+      <motion.h2
+        className="text-3xl md:text-4xl font-extrabold text-center text-gray-800 mb-10"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        Featured Rooms
+      </motion.h2>
+
+      {/* Responsive Grid */}
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+      >
         {featuredRooms.slice(0, 6).map((room) => (
-          <div
+          <motion.div
             key={room.id}
-            className="border rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-xl transition-transform transform hover:-translate-y-2"
-            data-aos="fade-up"
+            className="border rounded-lg shadow-lg overflow-hidden bg-white hover:shadow-2xl transition-transform transform hover:-translate-y-3"
+            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
+            {/* Room Image */}
             <img
               src={room.images}
               alt={room.name}
               className="w-full h-52 object-cover"
             />
+
+            {/* Room Details */}
             <div className="p-5">
               <h3 className="text-xl font-bold flex items-center gap-2 mb-3 text-gray-700">
                 <MdOutlineBedroomParent className="text-blue-500" /> {room.name}
@@ -336,6 +450,8 @@ const Home = () => {
               <p className="text-green-600 font-bold text-lg flex items-center gap-1 mb-5">
                 <FaDollarSign /> {room.price}
               </p>
+
+              {/* Book Now Button */}
               <Link
                 to={`/rooms/${room._id}`}
                 className="flex items-center justify-center gap-2 px-5 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition"
@@ -343,9 +459,9 @@ const Home = () => {
                 Book Now <FiArrowRightCircle />
               </Link>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
 
       {/* Testimonial Carousel */}
