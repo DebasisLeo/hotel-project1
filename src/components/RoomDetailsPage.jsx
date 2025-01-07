@@ -252,7 +252,7 @@ const RoomDetailsPage = () => {
         ) : errorFetchingReviews ? (
           <p>Error fetching reviews. Please try again later.</p>
         ) : reviews.length === 0 ? (
-          <p>No reviews yet.</p>
+          <p className='text-gray-100'>No reviews yet.</p>
         ) : (
           reviews.map((review, index) => (
             <div
@@ -268,7 +268,7 @@ const RoomDetailsPage = () => {
           ))
         )}
         <div className="review-form mt-4">
-          <h3 className="text-xl font-semibold">Post a Review</h3>
+          <h3 className="text-xl text-gray-100 font-semibold">Post a Review</h3>
           <input
             type="number"
             max="5"
