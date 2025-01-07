@@ -166,14 +166,14 @@ const RoomDetailsPage = () => {
           alt={room.name}
           className="w-full h-64 object-cover rounded-lg shadow-lg"
         />
-        <h1 className="text-4xl font-bold my-4">{room.name}</h1>
-        <p className="text-gray-700">{room.description}</p>
-        <p className="text-2xl font-semibold text-green-600 my-2">
+        <h1 className="text-4xl text-gray-300 font-bold my-4">{room.name}</h1>
+        <p className="text-gray-100">{room.description}</p>
+        <p className="text-2xl  font-semibold text-green-600 my-2">
           Price: {room.price} USD/night
         </p>
 
         <div className="booking-section mt-6">
-          <h2 className="text-2xl font-semibold mb-2 flex items-center gap-2">
+          <h2 className="text-2xl text-gray-100 font-semibold mb-2 flex items-center gap-2">
             <FaCalendarAlt /> Select Booking Dates
           </h2>
           <div className="flex gap-4 flex-wrap">
@@ -246,7 +246,7 @@ const RoomDetailsPage = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-semibold">Reviews</h2>
+        <h2 className="text-3xl text-cyan-200 font-semibold">Reviews</h2>
         {loadingReviews ? (
           <p>Loading reviews...</p>
         ) : errorFetchingReviews ? (
@@ -286,7 +286,7 @@ const RoomDetailsPage = () => {
           ></textarea>
           <button
             onClick={handlePostReview}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all"
+            className="bg-green-600 font-bold text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all"
           >
             Submit Review
           </button>
