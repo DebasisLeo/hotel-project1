@@ -26,6 +26,70 @@ Visit the live application: [LuxStay Hotels](https://hotel-managemet.web.app/)
 - **react-router-dom**: For routing and navigation.
 - **react-helmet**: For managing the document head.
 
+- ## Dependencies
+◉ aos: ^2.3.4
+Animate on Scroll library for smooth animations.
+
+◉ axios: ^1.7.9
+HTTP client for making API requests.
+
+◉ firebase: ^11.1.0
+Google Firebase services for web and mobile applications.
+
+◉ framer-motion: ^11.15.0
+Library for animations and transitions in React.
+
+◉ leaflet: ^1.9.4
+JavaScript library for interactive maps.
+
+◉ localforage: ^1.10.0
+Offline storage library with a simple API.
+
+◉ match-sorter: ^8.0.0
+Utility for filtering and sorting lists.
+
+◉ moment: ^2.30.1
+Library for parsing, validating, manipulating, and formatting dates.
+
+◉ react: ^19.0.0
+Core library for building user interfaces in React.
+
+◉ react-datepicker: ^7.5.0
+A customizable date picker component for React.
+
+◉ react-dom: ^19.0.0
+React package for working with the DOM.
+
+◉ react-helmet: ^6.1.0
+Library for managing changes to the document head.
+
+◉ react-icons: ^5.4.0
+Set of popular icons for React applications.
+
+◉ react-leaflet: ^5.0.0
+React components for Leaflet maps.
+
+◉ react-router-dom: ^7.1.0
+Routing library for React applications.
+
+◉ react-simple-typewriter: ^5.0.1
+Simple and lightweight typewriter effect for React.
+
+◉ react-slick: ^0.30.3
+Carousel component for React based on slick-carousel.
+
+◉ react-toastify: ^11.0.2
+Notifications library for React.
+
+◉ slick-carousel: ^1.8.1
+Carousel library used with react-slick.
+
+◉ sort-by: ^1.2.0
+Utility for sorting arrays by object properties.
+
+◉ sweetalert2: ^11.15.3
+Stylish alerts and pop-ups for web applications.
+
 - ## devDependencies
 1. @eslint/js: ^9.13.0
 Core ESLint library for linting JavaScript.
